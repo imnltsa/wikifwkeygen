@@ -91,4 +91,4 @@ mkdir -p wiki
 echo "${template}" > "wiki/${codename}_${buildid}_(${deviceid}).txt"
 open -e "wiki/${codename}_${buildid}_(${deviceid}).txt"
 
-echo "Finished. You can ensure everything is correct by checking for legible text in iBSS/iBEC/iBoot/LLB (they have been opened). SEP firmware is not decrypted."
+echo "Finished. PLEASE ensure everything is correct by checking for legible text in iBSS/iBEC/iBoot/LLB (they have been opened). SEP firmware is not decrypted, ensure the .im4p follows your MODEL."
