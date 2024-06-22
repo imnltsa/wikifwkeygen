@@ -19,7 +19,7 @@ buildid=$(echo "$filename" | awk -F '_' '{print $(NF-1)}')
 clear
 pzb --list "$ipswurl" > list.txt 2>&1
 open -e list.txt
-echo -e "Made by @dleovl\n\nUsing $ipswurl\n\nA file has been opened, please read it and type the model used for iBEC/iBSS/iBoot/LLB (should be different than DeviceTree, but really similar).\nFor example, j120 is used for iBEC/iBSS/iBoot/LLB while j120ap is used for DeviceTree. Type what would be in place of j120 (it should be closely related to your model).\n\nEnter the model found for your iBEC/iBSS/iBoot/LLB files:\n"
+echo -e "Made by @dleovl\n\nUsing $ipswurl\n\nA file has been opened, please read it and type the model used for iBEC/iBSS/iBoot/LLB (should be different than DeviceTree, but really similar).\nFor example, j120 is used for iBEC/iBSS/iBoot/LLB while j120ap is used for DeviceTree. Type what would be in place of j120 (it should be closely related to your model). On the off chance that there is no direct match, please try the closest files (upon decryption, ensure the text is LEGIBLE. sep-firmware should stay the same)\n\nEnter the model found for your iBEC/iBSS/iBoot/LLB files:\n"
 read model
 
 echo -e "\nEnter codename for ${buildid} (this can be acquired from Wikipedia under "Release history")\n"
