@@ -27,7 +27,7 @@ echo -e "Made by @dleovl\n\nUsing $ipswurl\n\nPlease wait..."
 
 pzb --get "BuildManifest.plist" "$ipswurl" > /dev/null
 pzb --get $(awk "/""${boardconfig}""/{x=1}x&&/iBSS[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1) "$ipswurl" > /dev/null
-pzb --get $(awk "/""${boardconfig}""/{x=1}x&&/iBEC[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1) > /dev/null
+pzb --get $(awk "/""${boardconfig}""/{x=1}x&&/iBEC[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1) "$ipswurl" > /dev/null
 pzb --get $(awk "/""${boardconfig}""/{x=1}x&&/LLB[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1) "$ipswurl" > /dev/null
 pzb --get $(awk "/""${boardconfig}""/{x=1}x&&/iBoot[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1) "$ipswurl" > /dev/null
 pzb --get $(awk "/""${boardconfig}""/{x=1}x&&/sep-firmware[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1) "$ipswurl" > /dev/null
@@ -47,18 +47,18 @@ ibootiv=$(awk '/iBoot IV:/ {print $NF}' keys.txt)
 ibootkey=$(awk '/iBoot Key:/ {print $NF}' keys.txt)
 ibootfilename=$(basename $(awk "/${boardconfig}/{x=1}x&&/iBoot[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1))
 
-img4 -i iBSS* -o iBSS.dec -k ${ibssiv}${ibsskey} > /dev/null
-img4 -i iBEC* -o iBEC.dec -k ${ibeciv}${ibeckey} > /dev/null
-img4 -i iBoot* -o iBoot.dec -k ${ibootiv}${ibootkey} > /dev/null
-img4 -i LLB* -o LLB.dec -k ${llbiv}${llbkey} > /dev/null
+img4 -i ${ibssfilename} -o iBSS.dec -k ${ibssiv}${ibsskey} > /dev/null
+img4 -i ${ibecfilename} -o iBEC.dec -k ${ibeciv}${ibeckey} > /dev/null
+img4 -i ${ibootfilename} -o iBoot.dec -k ${ibootiv}${ibootkey} > /dev/null
+img4 -i ${llbfilename} -o LLB.dec -k ${llbiv}${llbkey} > /dev/null
 open -e iBSS.dec iBEC.dec iBoot.dec LLB.dec
 
-sepfwinfo=$(pyimg4 im4p info -i sep-firmware*)
+sepfwfilename=$(basename $(awk "/${boardconfig}/{x=1}x&&/sep-firmware[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1))
+sepfwinfo=$(pyimg4 im4p info -i ${sepfwfilename})
 sepfwprodiv=$(echo "$sepfwinfo" | awk '/Type: PRODUCTION/ {getline; print $NF}')
 sepfwprodkey=$(echo "$sepfwinfo" | awk '/Type: PRODUCTION/ {getline; getline; print $NF}')
 sepfwdeviv=$(echo "$sepfwinfo" | awk '/Type: DEVELOPMENT/ {getline; print $NF}')
 sepfwdevkey=$(echo "$sepfwinfo" | awk '/Type: DEVELOPMENT/ {getline; getline; print $NF}')
-sepfwfilename=$(basename $(awk "/${boardconfig}/{x=1}x&&/sep-firmware[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1))
 
 content="{{keys
  | Version               = ${version}
@@ -93,5 +93,6 @@ content="{{keys
 mkdir -p wiki
 echo "${content}" > "wiki/${codename}_${buildid}_(${deviceid}).txt"
 open -e "wiki/${codename}_${buildid}_(${deviceid}).txt"
+rm -f *.im4p
 
-echo "Finished. PLEASE ensure everything is correct by checking for legible text in iBSS/iBEC/iBoot/LLB (they have been opened). SEP firmware is not decrypted, ensure the .im4p follows your MODEL."
+echo "Finished. Check for legible text in iBSS/iBEC/iBoot/LLB (they have been opened in TextEdit). SEP firmware is not decrypted. Only contribute if you are entirely confident these are correct."
