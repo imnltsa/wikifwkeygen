@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nPlease put your device into pwned DFU mode with gaster pwn.\nThis script may not be compatible with i(Pad)OS 18.\nRequirements: Criptam, irecovery, pzb, img4, pyimg4\nMade by @dleovl\n"
+echo -e "\nPlease put your device into pwned DFU mode with gaster pwn.\nThis script may not be compatible with i(Pad)OS 18.\nRequirements: Criptam (ensure you're using a version that works), irecovery, pzb, img4, pyimg4\n"
 
 deviceinfo=$(irecovery -q)
 deviceid=$(echo "$deviceinfo" | awk '/PRODUCT/ {print $NF}')
